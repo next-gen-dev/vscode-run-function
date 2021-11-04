@@ -53,7 +53,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                             title: "Execute function",
                             // tooltip: "Tooltip provided by sample extension",
                             command: "codelens-sample.codelensAction",
-                            arguments: [document.fileName, matches[3]],
+                            arguments: [document.uri.path, matches[3]],
                         }),
                     );
                 }

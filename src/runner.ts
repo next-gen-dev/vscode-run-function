@@ -1,19 +1,56 @@
-import { spawn } from "child_process";
+import { ChildProcessWithoutNullStreams, spawn } from "child_process";
+import { parse } from "path";
 
+function mjsProcess(filepath: string, functionName: string) {
+    const args = [
+        "-e",
+        `import('${filepath}').then(m => m.${functionName}()).then(v => console.log(JSON.stringify(v)), console.error)`,
+    ];
+    console.log(`Executing: node ${args.join(" ")}`);
+    return spawn("node", args);
+}
+
+function tsProcess(filepath: string, functionName: string) {
+    const { name, dir } = parse(filepath);
+    const args = [
+        "-O",
+        '{"target": "es2015"}',
+        "-e",
+        `import('./${name}').then(m => m.${functionName}()).then(v => console.log(JSON.stringify(v)), console.error)`,
+    ];
+    console.log(`Executing: ts-node ${args.join(" ")}`);
+    return spawn("ts-node", args, { cwd: dir });
+}
+
+function fileProcess(
+    filepath: string,
+    functionName: string,
+): ChildProcessWithoutNullStreams {
+    const extension = parse(filepath).ext;
+    switch (extension) {
+        case ".mjs":
+            return mjsProcess(filepath, functionName);
+        case ".ts":
+        case ".tsx":
+            return tsProcess(filepath, functionName);
+    }
+    throw new Error(`Extension "${extension}" not supported`);
+}
+
+// TODO: display errors
 // TODO: execute file that's not saved
-// TODO: typescript
 // TODO: .js files
-export function runModuleFunction(file: string, name: string) {
+export function runModuleFunction(filepath: string, functionName: string) {
     return new Promise(function (resolve, reject) {
         try {
-            const process = spawn("node", [
-                "-e",
-                `import('${file}').then(m => m.${name}()).then(v => console.log(JSON.stringify(v)))`,
-            ]);
+            const process = fileProcess(filepath, functionName);
 
             var result = "";
             process.stdout.on("data", function (data) {
                 result += data.toString();
+            });
+            process.stderr.on("data", function (data) {
+                console.error(data.toString());
             });
             // TODO: also parse error
             process.on("close", function (code) {
