@@ -12,7 +12,9 @@ export class CodelensProvider implements vscode.CodeLensProvider {
         this._onDidChangeCodeLenses.event;
 
     constructor() {
-        this.regex = /(.+)/g;
+        // TODO: make this regex a "function" with test inputs and outputs
+        this.regex =
+            /export\s+((async\s+)?function\s+([^\(]+)|const\s+.+\s*=\s*\([^\s=]*\)\s*=>)/g;
 
         vscode.workspace.onDidChangeConfiguration((_) => {
             this._onDidChangeCodeLenses.fire();
@@ -37,13 +39,23 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                     document.positionAt(matches.index).line,
                 );
                 const indexOf = line.text.indexOf(matches[0]);
+                if (line.firstNonWhitespaceCharacterIndex !== indexOf) {
+                    continue;
+                }
                 const position = new vscode.Position(line.lineNumber, indexOf);
                 const range = document.getWordRangeAtPosition(
                     position,
                     new RegExp(this.regex),
                 );
                 if (range) {
-                    this.codeLenses.push(new vscode.CodeLens(range));
+                    this.codeLenses.push(
+                        new vscode.CodeLens(range, {
+                            title: "Execute function",
+                            // tooltip: "Tooltip provided by sample extension",
+                            command: "codelens-sample.codelensAction",
+                            arguments: [document.fileName, matches[3]],
+                        }),
+                    );
                 }
             }
             return this.codeLenses;
@@ -60,12 +72,6 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                 .getConfiguration("codelens-sample")
                 .get("enableCodeLens", true)
         ) {
-            codeLens.command = {
-                title: "Codelens provided by sample extension",
-                tooltip: "Tooltip provided by sample extension",
-                command: "codelens-sample.codelensAction",
-                arguments: ["Argument 1", false],
-            };
             return codeLens;
         }
         return null;

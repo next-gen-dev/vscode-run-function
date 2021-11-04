@@ -9,6 +9,7 @@ import {
     window,
 } from "vscode";
 import { CodelensProvider } from "./CodelensProvider";
+import { runModuleFunction } from "./runner";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -32,11 +33,24 @@ export function activate(context: ExtensionContext) {
             .update("enableCodeLens", false, true);
     });
 
-    commands.registerCommand("codelens-sample.codelensAction", (args: any) => {
-        window.showInformationMessage(
-            `CodeLens action clicked with args=${args}`,
-        );
-    });
+    commands.registerCommand(
+        "codelens-sample.codelensAction",
+        (fileName: string, functionName: string) => {
+            // Run node
+            // node -e "import('./index.mjs').then(m => console.log(m.randomId2()))
+            runModuleFunction(fileName, functionName).then(
+                (v) => {
+                    window.showInformationMessage(
+                        `Result: ${JSON.stringify(v)}`,
+                    );
+                },
+                (err) => {
+                    console.error(err);
+                    window.showInformationMessage(`CodeLens error`);
+                },
+            );
+        },
+    );
 }
 
 // this method is called when your extension is deactivated
