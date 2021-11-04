@@ -21,23 +21,22 @@ export function activate(context: ExtensionContext) {
 
     languages.registerCodeLensProvider("*", codelensProvider);
 
-    commands.registerCommand("codelens-sample.enableCodeLens", () => {
+    commands.registerCommand("live-run.enableCodeLens", () => {
         workspace
-            .getConfiguration("codelens-sample")
+            .getConfiguration("live-run")
             .update("enableCodeLens", true, true);
     });
 
-    commands.registerCommand("codelens-sample.disableCodeLens", () => {
+    commands.registerCommand("live-run.disableCodeLens", () => {
         workspace
-            .getConfiguration("codelens-sample")
+            .getConfiguration("live-run")
             .update("enableCodeLens", false, true);
     });
 
     commands.registerCommand(
-        "codelens-sample.codelensAction",
+        "live-run.codelensAction",
         (fileName: string, functionName: string) => {
             // Run node
-            // node -e "import('./index.mjs').then(m => console.log(m.randomId2()))
             const startTime = Date.now();
             runModuleFunction(fileName, functionName)
                 .then(

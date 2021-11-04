@@ -25,9 +25,10 @@ export class CodelensProvider implements vscode.CodeLensProvider {
         document: vscode.TextDocument,
         token: vscode.CancellationToken,
     ): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
+        // TODO: check for file extensions
         if (
             vscode.workspace
-                .getConfiguration("codelens-sample")
+                .getConfiguration("live-run")
                 .get("enableCodeLens", true)
         ) {
             this.codeLenses = [];
@@ -51,8 +52,9 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                     this.codeLenses.push(
                         new vscode.CodeLens(range, {
                             title: "Execute function",
-                            // tooltip: "Tooltip provided by sample extension",
-                            command: "codelens-sample.codelensAction",
+                            tooltip:
+                                "Executes the function and shows the returned value",
+                            command: "live-run.codelensAction",
                             arguments: [document.uri.path, matches[3]],
                         }),
                     );
@@ -69,7 +71,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
     ) {
         if (
             vscode.workspace
-                .getConfiguration("codelens-sample")
+                .getConfiguration("live-run")
                 .get("enableCodeLens", true)
         ) {
             return codeLens;

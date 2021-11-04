@@ -23,19 +23,19 @@
     "contributes": {
         "commands": [
             {
-                "title": "Enable CodeLens",
-                "command": "codelens-sample.enableCodeLens",
-                "category": "CodeLens Sample"
+                "title": "Enable LiveRun CodeLens",
+                "command": "live-run.enableCodeLens",
+                "category": "LiveRun"
             },
             {
-                "title": "Disable Codelens",
-                "command": "codelens-sample.disableCodeLens",
-                "category": "CodeLens Sample"
+                "title": "Disable LiveRun CodeLens",
+                "command": "live-run.disableCodeLens",
+                "category": "LiveRun"
             }
         ],
         "configuration": {
             "properties": {
-                "codelens-sample.enableCodeLens": {
+                "live-run.enableCodeLens": {
                     "type": "boolean",
                     "default": true
                 }

@@ -4,7 +4,6 @@
 
 #### Missing Essential Functionality:
 
--   Rename settings strings
 -   Handle unsaved files
     -   Either use the in-memory contents of the file, or ask the user to save the file
 -   Report errors
