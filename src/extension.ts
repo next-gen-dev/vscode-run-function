@@ -38,17 +38,24 @@ export function activate(context: ExtensionContext) {
         (fileName: string, functionName: string) => {
             // Run node
             // node -e "import('./index.mjs').then(m => console.log(m.randomId2()))
-            runModuleFunction(fileName, functionName).then(
-                (v) => {
-                    window.showInformationMessage(
-                        `Result: ${JSON.stringify(v)}`,
+            const startTime = Date.now();
+            runModuleFunction(fileName, functionName)
+                .then(
+                    (v) => {
+                        window.showInformationMessage(
+                            `Result: ${JSON.stringify(v)}`,
+                        );
+                    },
+                    (err) => {
+                        console.error(err);
+                        window.showInformationMessage(`CodeLens error`);
+                    },
+                )
+                .finally(() => {
+                    console.log(
+                        `Execution time: ${(Date.now() - startTime) / 1000}s`,
                     );
-                },
-                (err) => {
-                    console.error(err);
-                    window.showInformationMessage(`CodeLens error`);
-                },
-            );
+                });
         },
     );
 }

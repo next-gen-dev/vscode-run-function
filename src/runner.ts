@@ -1,5 +1,5 @@
 import { ChildProcessWithoutNullStreams, spawn } from "child_process";
-import { parse } from "path";
+import { parse, join } from "path";
 
 function mjsProcess(filepath: string, functionName: string) {
     const args = [
@@ -12,14 +12,23 @@ function mjsProcess(filepath: string, functionName: string) {
 
 function tsProcess(filepath: string, functionName: string) {
     const { name, dir } = parse(filepath);
+    const bin = join(
+        __dirname,
+        "..",
+        "node_modules",
+        "ts-node",
+        "dist",
+        "bin.js",
+    );
     const args = [
+        "-T",
         "-O",
         '{"target": "es2015"}',
         "-e",
         `import('./${name}').then(m => m.${functionName}()).then(v => console.log(JSON.stringify(v)), console.error)`,
     ];
-    console.log(`Executing: ts-node ${args.join(" ")}`);
-    return spawn("ts-node", args, { cwd: dir });
+    console.log(`Executing: ${bin} ${args.join(" ")}`);
+    return spawn(bin, args, { cwd: dir });
 }
 
 function fileProcess(
