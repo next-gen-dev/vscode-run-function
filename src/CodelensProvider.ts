@@ -1,5 +1,12 @@
 import * as vscode from "vscode";
 
+function getFunctionNameFromMatch(match: RegExpMatchArray): string {
+    if (match[1].match(/^(const|let|var)/)) {
+        return match[5];
+    }
+    return match[3];
+}
+
 /**
  * CodelensProvider
  */
@@ -14,7 +21,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
     constructor() {
         // TODO: make this regex a "function" with test inputs and outputs
         this.regex =
-            /export\s+((async\s+)?function\s+([^\(]+)|const\s+.+\s*=\s*\([^\s=]*\)\s*=>)/g;
+            /export\s+((async\s+)?function\s+([^\(]+)|(const|let|var)\s+([^\s=]+)\s*=\s*(async)?(\s+function|\s*\([^\s=]*\)\s*=>))/g;
 
         vscode.workspace.onDidChangeConfiguration((_) => {
             this._onDidChangeCodeLenses.fire();
@@ -49,13 +56,14 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                     new RegExp(this.regex),
                 );
                 if (range) {
+                    const name = getFunctionNameFromMatch(matches);
                     this.codeLenses.push(
                         new vscode.CodeLens(range, {
                             title: "Execute function",
                             tooltip:
                                 "Executes the function and shows the returned value",
                             command: "live-run.codelensAction",
-                            arguments: [document.uri.path, matches[3]],
+                            arguments: [document.uri.path, name],
                         }),
                     );
                 }
