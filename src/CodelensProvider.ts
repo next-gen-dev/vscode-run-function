@@ -63,7 +63,11 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                             tooltip:
                                 "Executes the function and shows the returned value",
                             command: "live-run.codelensAction",
-                            arguments: [document.uri.path, name],
+                            arguments: [
+                                document.uri.path,
+                                name,
+                                line.lineNumber,
+                            ],
                         }),
                     );
                 }

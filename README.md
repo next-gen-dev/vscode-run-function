@@ -6,8 +6,6 @@
 
 -   Handle unsaved files
     -   Either use the in-memory contents of the file, or ask the user to save the file
--   Report errors
--   Redirect logs to the Output or Debug Console
 
 #### Ideas and Improvements:
 

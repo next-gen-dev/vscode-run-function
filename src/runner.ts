@@ -1,13 +1,17 @@
 import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 import { parse, join } from "path";
 
+// TODO: execute file that's not saved
+// TODO: .js files
+
 function mjsProcess(filepath: string, functionName: string) {
+    const { dir } = parse(filepath);
     const args = [
         "-e",
         `import('${filepath}').then(m => m.${functionName}()).then(v => console.log(JSON.stringify(v)), console.error)`,
     ];
     console.log(`Executing: node ${args.join(" ")}`);
-    return spawn("node", args);
+    return spawn("node", args, { cwd: dir });
 }
 
 function tsProcess(filepath: string, functionName: string) {
@@ -23,7 +27,7 @@ function tsProcess(filepath: string, functionName: string) {
     const args = [
         "-T",
         "-O",
-        '{"target": "es2015"}',
+        `{"target": "es2015"}`,
         "-e",
         `import('./${name}').then(m => m.${functionName}()).then(v => console.log(JSON.stringify(v)), console.error)`,
     ];
@@ -31,7 +35,36 @@ function tsProcess(filepath: string, functionName: string) {
     return spawn(bin, args, { cwd: dir });
 }
 
-function fileProcess(
+// function runInTerminal(filepath: string, functionName: string) {
+//     const { name } = parse(filepath);
+//     const terminal = window.createTerminal("Code");
+//     terminal.show(true);
+//     // this.sendRunEvent(executor, true);
+//     // executor = this.changeExecutorFromCmdToPs(executor);
+//     // let command = await this.getFinalCommandToRunCodeFile(executor, appendFile);
+//     // command = this.changeFilePathForBashOnWindows(command);
+//     // if (this._config.get<boolean>("clearPreviousOutput") && !isNewTerminal) {
+//     //     await vscode.commands.executeCommand("workbench.action.terminal.clear");
+//     // }
+//     // if (this._config.get<boolean>("fileDirectoryAsCwd")) {
+//     //     const cwd = this.changeFilePathForBashOnWindows(this._cwd);
+//     //     this._terminal.sendText(`cd "${cwd}"`);
+//     // }
+//     // this._terminal.sendText(command);
+//     const bin = join(
+//         __dirname,
+//         "..",
+//         "node_modules",
+//         "ts-node",
+//         "dist",
+//         "bin.js",
+//     );
+//     terminal.sendText(
+//         `${bin} -T -O '{"target": "es2015"}' -e "import('./${name}').then(m => m.${functionName}()).then(v => console.log(JSON.stringify(v)), console.error)"`,
+//     );
+// }
+
+export function moduleFunctionProcess(
     filepath: string,
     functionName: string,
 ): ChildProcessWithoutNullStreams {
@@ -44,36 +77,4 @@ function fileProcess(
             return tsProcess(filepath, functionName);
     }
     throw new Error(`Extension "${extension}" not supported`);
-}
-
-// TODO: display errors
-// TODO: execute file that's not saved
-// TODO: .js files
-export function runModuleFunction(filepath: string, functionName: string) {
-    return new Promise(function (resolve, reject) {
-        try {
-            const process = fileProcess(filepath, functionName);
-
-            var result = "";
-            process.stdout.on("data", function (data) {
-                result += data.toString();
-            });
-            process.stderr.on("data", function (data) {
-                console.error(data.toString());
-            });
-            // TODO: also parse error
-            process.on("close", function (code) {
-                // Should probably be 'exit', not 'close'
-                // *** Process completed
-                // console.log(result);
-                resolve(JSON.parse(result));
-            });
-            process.on("error", function (err) {
-                // *** Process creation failed
-                reject(err);
-            });
-        } catch (e) {
-            reject(e);
-        }
-    });
 }
