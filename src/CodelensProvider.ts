@@ -32,7 +32,6 @@ export class CodelensProvider implements vscode.CodeLensProvider {
         document: vscode.TextDocument,
         token: vscode.CancellationToken,
     ): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
-        // TODO: check for file extensions
         if (
             vscode.workspace
                 .getConfiguration("live-run")
@@ -63,11 +62,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                             tooltip:
                                 "Executes the function and shows the returned value",
                             command: "live-run.codelensAction",
-                            arguments: [
-                                document.uri.path,
-                                name,
-                                line.lineNumber,
-                            ],
+                            arguments: [document, name, line.lineNumber],
                         }),
                     );
                 }

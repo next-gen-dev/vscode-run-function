@@ -9,6 +9,7 @@ import {
     workspace,
     window,
     OutputChannel,
+    TextDocument,
 } from "vscode";
 import { CodelensProvider } from "./CodelensProvider";
 import { moduleFunctionProcess } from "./runner";
@@ -61,8 +62,12 @@ export function activate(context: ExtensionContext) {
 
     commands.registerCommand(
         "live-run.codelensAction",
-        (fileName: string, functionName: string, line: number) => {
+        async (document: TextDocument, functionName: string, line: number) => {
             output.show(true);
+            if (document.isDirty) {
+                await document.save();
+            }
+            const fileName = document.uri.path;
             output.appendLine(`Executing ${functionName}()`); // in file ${fileName}:${line}
             const proc = moduleFunctionProcess(fileName, functionName);
             pipeProcessToOutput(output, proc);

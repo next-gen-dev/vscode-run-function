@@ -4,12 +4,15 @@
 
 #### Missing Essential Functionality:
 
--   Handle unsaved files
-    -   Either use the in-memory contents of the file, or ask the user to save the file
+-   Update the README with a proper description and images
 
 #### Ideas and Improvements:
 
--   Give feedback to the user when the function starts running (useful for long-running functions)
+-   Add an option to change auto-save behavior
+    -   Auto-save: Saves the file when "Execute function" is clicked. This should also print "Auto saved" in the console
+    -   Ask: Shows a dialog to offer saving the file
+    -   Temp file: Creates a temp file in the same folder and executes that instead. Might have problems if other files require the file (circular references)
+    -   Don't save: Doesn't save the file. Executes the saved file. Should notify the user that it's executing the unsaved version
 -   Support `.js` and `.jsx` files
 -   Add a setting to choose the output between the information alert and just the Output or Debug Console
 -   Only show the CodeLens for supported file extensions
