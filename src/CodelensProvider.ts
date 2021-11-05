@@ -34,7 +34,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
     ): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
         if (
             vscode.workspace
-                .getConfiguration("live-run")
+                .getConfiguration("run-function")
                 .get("enableCodeLens", true)
         ) {
             this.codeLenses = [];
@@ -58,10 +58,10 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                     const name = getFunctionNameFromMatch(matches);
                     this.codeLenses.push(
                         new vscode.CodeLens(range, {
-                            title: "Execute function",
+                            title: "Run function",
                             tooltip:
-                                "Executes the function and shows the returned value",
-                            command: "live-run.codelensAction",
+                                "Executes the function and logs the returned value",
+                            command: "run-function.codelensAction",
                             arguments: [document, name, line.lineNumber],
                         }),
                     );
@@ -78,7 +78,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
     ) {
         if (
             vscode.workspace
-                .getConfiguration("live-run")
+                .getConfiguration("run-function")
                 .get("enableCodeLens", true)
         ) {
             return codeLens;

@@ -33,7 +33,7 @@ function pipeProcessToOutput(
     // proc.on("close", function (code) {});
     proc.on("error", function (err) {
         console.error(err); // Extension issue
-        // TODO: Maybe just append a message like: "Error with LiveRun extension, please submit an issue at $URL"
+        // TODO: Maybe just append a message like: "Error with Run Function extension, please submit an issue at $URL"
         channel.appendLine(err.message);
         if (err.stack) {
             channel.appendLine(err.stack);
@@ -43,25 +43,25 @@ function pipeProcessToOutput(
 
 export function activate(context: ExtensionContext) {
     const codelensProvider = new CodelensProvider();
-    const output = window.createOutputChannel("Live Run");
+    const output = window.createOutputChannel("Run Function Extension");
     disposables.push(output);
 
     languages.registerCodeLensProvider("*", codelensProvider);
 
-    commands.registerCommand("live-run.enableCodeLens", () => {
+    commands.registerCommand("run-function.enableCodeLens", () => {
         workspace
-            .getConfiguration("live-run")
+            .getConfiguration("run-function")
             .update("enableCodeLens", true, true);
     });
 
-    commands.registerCommand("live-run.disableCodeLens", () => {
+    commands.registerCommand("run-function.disableCodeLens", () => {
         workspace
-            .getConfiguration("live-run")
+            .getConfiguration("run-function")
             .update("enableCodeLens", false, true);
     });
 
     commands.registerCommand(
-        "live-run.codelensAction",
+        "run-function.codelensAction",
         async (document: TextDocument, functionName: string, line: number) => {
             output.show(true);
             if (document.isDirty) {

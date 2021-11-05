@@ -1,14 +1,14 @@
 {
-    "name": "live-run",
-    "displayName": "Live Run",
-    "description": "Execute functions automatically and preview the result",
+    "name": "vscode-run-function",
+    "displayName": "Run Function",
+    "description": "Execute js and ts functions",
     "version": "0.0.1",
     "publisher": "andreterron",
     "private": true,
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/next-gen-dev/vscode-live-run"
+        "url": "https://github.com/next-gen-dev/vscode-run-function"
     },
     "engines": {
         "vscode": "^1.26.0"
@@ -23,19 +23,19 @@
     "contributes": {
         "commands": [
             {
-                "title": "Enable LiveRun CodeLens",
-                "command": "live-run.enableCodeLens",
-                "category": "LiveRun"
+                "title": "Enable Run Function CodeLens",
+                "command": "run-function.enableCodeLens",
+                "category": "Run Function"
             },
             {
-                "title": "Disable LiveRun CodeLens",
-                "command": "live-run.disableCodeLens",
-                "category": "LiveRun"
+                "title": "Disable Run Function CodeLens",
+                "command": "run-function.disableCodeLens",
+                "category": "Run Function"
             }
         ],
         "configuration": {
             "properties": {
-                "live-run.enableCodeLens": {
+                "run-function.enableCodeLens": {
                     "type": "boolean",
                     "default": true
                 }
