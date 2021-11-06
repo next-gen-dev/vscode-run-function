@@ -8,7 +8,7 @@ function mjsProcess(filepath: string, functionName: string) {
     const { dir } = parse(filepath);
     const args = [
         "-e",
-        `import('${filepath}').then(m => m.${functionName}()).then(v => console.log(JSON.stringify(v)), console.error)`,
+        `import('${filepath}').then(m => m.${functionName}()).then(v => console.log(JSON.stringify(v, null, 4)), console.error)`,
     ];
     console.log(`Executing: node ${args.join(" ")}`);
     return spawn("node", args, { cwd: dir });
@@ -29,7 +29,7 @@ function tsProcess(filepath: string, functionName: string) {
         "-O",
         `{"target": "es2015"}`,
         "-e",
-        `import('./${name}').then(m => m.${functionName}()).then(v => console.log(JSON.stringify(v)), console.error)`,
+        `import('./${name}').then(m => m.${functionName}()).then(v => console.log(JSON.stringify(v, null, 4)), console.error)`,
     ];
     console.log(`Executing: ${bin} ${args.join(" ")}`);
     return spawn(bin, args, { cwd: dir });
