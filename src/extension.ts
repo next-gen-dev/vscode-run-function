@@ -10,9 +10,23 @@ import {
     window,
     OutputChannel,
     TextDocument,
+    DocumentFilter,
 } from "vscode";
 import { CodelensProvider } from "./CodelensProvider";
 import { moduleFunctionProcess } from "./runner";
+
+const documentFilter: DocumentFilter[] = [
+    {
+        language: "typescript",
+        scheme: "file", // only files from disk
+        pattern: "**/*.{ts,tsx}",
+    },
+    {
+        language: "javascript",
+        scheme: "file", // only files from disk
+        pattern: "**/*.mjs",
+    },
+];
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -48,7 +62,7 @@ export function activate(context: ExtensionContext) {
     const output = window.createOutputChannel("Run Function Extension");
     disposables.push(output);
 
-    languages.registerCodeLensProvider("*", codelensProvider);
+    languages.registerCodeLensProvider(documentFilter, codelensProvider);
 
     commands.registerCommand("run-function.enableCodeLens", () => {
         workspace

@@ -45,7 +45,6 @@ import("./myFile") // Imports your file dynamically
     -   Ask: Shows a dialog to offer saving the file
     -   Temp file: Creates a temp file in the same folder and executes that instead. Might have problems if other files require the file (circular references)
     -   Don't save: Doesn't save the file. Executes the saved file. Should notify the user that it's executing the unsaved version
--   [ ] Only show the CodeLens for supported file extensions
 -   [ ] Add a VSCode command (Cmd+Shift+P) to run the current function
 -   [ ] Add an option to disable the CodeLens
 -   [ ] Add an option to run the function in the terminal
