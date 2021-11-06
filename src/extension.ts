@@ -29,8 +29,10 @@ function pipeProcessToOutput(
     proc.stderr.on("data", function (data) {
         channel.append(data.toString());
     });
-    // TODO: Consider informing the user that the function is done executing
-    // proc.on("close", function (code) {});
+    // TODO: Consider informing the user that the function is done executing, and how long it took
+    proc.on("close", function (code) {
+        channel.appendLine("");
+    });
     proc.on("error", function (err) {
         console.error(err); // Extension issue
         // TODO: Maybe just append a message like: "Error with Run Function extension, please submit an issue at $URL"
