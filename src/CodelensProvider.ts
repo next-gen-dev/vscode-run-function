@@ -58,7 +58,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                     const name = getFunctionNameFromMatch(matches);
                     this.codeLenses.push(
                         new vscode.CodeLens(range, {
-                            title: "Run function",
+                            title: "► Run function",
                             tooltip:
                                 "Executes the function and logs the returned value",
                             command: "run-function.codelensAction",
