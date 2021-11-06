@@ -37,30 +37,20 @@ import("./myFile") // Imports your file dynamically
 
 ## Future Work and Ideas
 
-[ ] Support `.js` and `.jsx` files
-
-[ ] Function Parameters
-
-[ ] Add an option to enable TypeScript type checking (disabled for a ~3x quicker transpilation)
-
-[ ] Add an option to change auto-save behavior
-
--   Auto-save: Saves the file when "► Run function" is clicked. This should also print "Auto saved" in the console
--   Ask: Shows a dialog to offer saving the file
--   Temp file: Creates a temp file in the same folder and executes that instead. Might have problems if other files require the file (circular references)
--   Don't save: Doesn't save the file. Executes the saved file. Should notify the user that it's executing the unsaved version
-
-[ ] Only show the CodeLens for supported file extensions
-
-[ ] Add a VSCode command (Cmd+Shift+P) to run the current function
-
-[ ] Add an option to disable the CodeLens
-
-[ ] Add an option to run the function in the terminal
-
-[ ] Color the output
-
-[ ] Display a webview with an interactive way of visualizing the data. Useful for objects (with a tree view), or lists (with a table view)
+-   [ ] Support `.js` and `.jsx` files
+-   [ ] Function Parameters
+-   [ ] Add an option to enable TypeScript type checking (disabled for a ~3x quicker transpilation)
+-   [ ] Add an option to change auto-save behavior
+    -   Auto-save: Saves the file when "► Run function" is clicked. This should also print "Auto saved" in the console
+    -   Ask: Shows a dialog to offer saving the file
+    -   Temp file: Creates a temp file in the same folder and executes that instead. Might have problems if other files require the file (circular references)
+    -   Don't save: Doesn't save the file. Executes the saved file. Should notify the user that it's executing the unsaved version
+-   [ ] Only show the CodeLens for supported file extensions
+-   [ ] Add a VSCode command (Cmd+Shift+P) to run the current function
+-   [ ] Add an option to disable the CodeLens
+-   [ ] Add an option to run the function in the terminal
+-   [ ] Color the output
+-   [ ] Display a webview with an interactive way of visualizing the data. Useful for objects (with a tree view), or lists (with a table view)
 
 ## Developing
 
