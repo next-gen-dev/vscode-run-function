@@ -5,7 +5,6 @@ import {
     ExtensionContext,
     languages,
     commands,
-    Disposable,
     workspace,
     window,
     OutputChannel,
@@ -30,8 +29,6 @@ const documentFilter: DocumentFilter[] = [
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-
-let disposables: Disposable[] = [];
 
 function pipeProcessToOutput(
     channel: OutputChannel,
@@ -60,41 +57,42 @@ function pipeProcessToOutput(
 export function activate(context: ExtensionContext) {
     const codelensProvider = new CodelensProvider();
     const output = window.createOutputChannel("Run Function Extension");
-    disposables.push(output);
 
-    languages.registerCodeLensProvider(documentFilter, codelensProvider);
+    context.subscriptions.push(
+        output,
+        languages.registerCodeLensProvider(documentFilter, codelensProvider),
 
-    commands.registerCommand("run-function.enableCodeLens", () => {
-        workspace
-            .getConfiguration("run-function")
-            .update("enableCodeLens", true, true);
-    });
+        commands.registerCommand("run-function.enableCodeLens", () => {
+            workspace
+                .getConfiguration("run-function")
+                .update("enableCodeLens", true, true);
+        }),
 
-    commands.registerCommand("run-function.disableCodeLens", () => {
-        workspace
-            .getConfiguration("run-function")
-            .update("enableCodeLens", false, true);
-    });
+        commands.registerCommand("run-function.disableCodeLens", () => {
+            workspace
+                .getConfiguration("run-function")
+                .update("enableCodeLens", false, true);
+        }),
 
-    commands.registerCommand(
-        "run-function.codelensAction",
-        async (document: TextDocument, functionName: string, line: number) => {
-            output.show(true);
-            if (document.isDirty) {
-                await document.save();
-            }
-            const fileName = document.uri.path;
-            output.appendLine(`Executing ${functionName}()`); // in file ${fileName}:${line}
-            const proc = moduleFunctionProcess(fileName, functionName);
-            pipeProcessToOutput(output, proc);
-        },
+        commands.registerCommand(
+            "run-function.codelensAction",
+            async (
+                document: TextDocument,
+                functionName: string,
+                line: number,
+            ) => {
+                output.show(true);
+                if (document.isDirty) {
+                    await document.save();
+                }
+                const fileName = document.uri.path;
+                output.appendLine(`Executing ${functionName}()`); // in file ${fileName}:${line}
+                const proc = moduleFunctionProcess(fileName, functionName);
+                pipeProcessToOutput(output, proc);
+            },
+        ),
     );
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {
-    if (disposables) {
-        disposables.forEach((item) => item.dispose());
-    }
-    disposables = [];
-}
+export function deactivate() {}
