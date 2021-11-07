@@ -1,15 +1,62 @@
-import * as assert from 'assert';
+import { it } from "mocha";
+import { match, doesNotMatch } from "assert";
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
-import * as vscode from 'vscode';
+import { window } from "vscode";
 // import * as myExtension from '../../extension';
+import { CodelensProvider } from "../../CodelensProvider";
 
-suite('Extension Test Suite', () => {
-	vscode.window.showInformationMessage('Start all tests.');
+suite("Extension Test Suite", () => {
+    window.showInformationMessage("Start all tests.");
 
-	test('Sample test', () => {
-		assert.strictEqual(-1, [1, 2, 3].indexOf(5));
-		assert.strictEqual(-1, [1, 2, 3].indexOf(0));
-	});
+    const provider = new CodelensProvider();
+
+    function getRegex(): RegExp {
+        // @ts-ignore
+        return new RegExp(provider.regex);
+    }
+
+    it("should match export function", () => {
+        match("export function funcName() {}", getRegex());
+    });
+
+    it("should match exported async function", () => {
+        match("export async function funcName() {}", getRegex());
+    });
+
+    it("should match exported variables with function", () => {
+        match("export const varName = function () {}", getRegex());
+        match("export let varName = function () {}", getRegex());
+        match("export var varName = function () {}", getRegex());
+        match("export const varName = async function () {}", getRegex());
+        match("export let varName = async function () {}", getRegex());
+        match("export var varName = async function () {}", getRegex());
+        match("export const varName = () => {}", getRegex());
+        match("export let varName = () => {}", getRegex());
+        match("export var varName = () => {}", getRegex());
+        match("export const varName = () => 2", getRegex());
+        match("export let varName = () => 2", getRegex());
+        match("export var varName = () => 2", getRegex());
+    });
+
+    it("should not match functions inside strings", () => {
+        doesNotMatch(`"export async function funcName() {}"`, getRegex());
+        doesNotMatch(`"export function funcName() {}"`, getRegex());
+        doesNotMatch(`export const name = "function name() {}"`, getRegex());
+        doesNotMatch(`export const varName = "function () {}"`, getRegex());
+        doesNotMatch(`export const varName = "() => {}"`, getRegex());
+    });
+
+    it("should not match functions in comments", () => {
+        doesNotMatch(`// export async function funcName() {}`, getRegex());
+        doesNotMatch(`/* export async function funcName() {} */`, getRegex());
+        doesNotMatch(`export const varName = 1 // function () {}`, getRegex());
+        doesNotMatch(`export const varName = 1 // () => 1`, getRegex());
+        doesNotMatch(
+            `export const varName = 1 /* function () {} */`,
+            getRegex(),
+        );
+        doesNotMatch(`export const varName = 1 /* () => 1 */`, getRegex());
+    });
 });

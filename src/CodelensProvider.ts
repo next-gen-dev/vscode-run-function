@@ -1,10 +1,10 @@
 import * as vscode from "vscode";
 
 function getFunctionNameFromMatch(match: RegExpMatchArray): string {
-    if (match[1].match(/^(const|let|var)/)) {
-        return match[5];
+    if (match[2].match(/^(const|let|var)/)) {
+        return match[6];
     }
-    return match[3];
+    return match[4];
 }
 
 /**
@@ -21,7 +21,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
     constructor() {
         // TODO: make this regex a "function" with test inputs and outputs
         this.regex =
-            /export\s+((async\s+)?function\s+([^\(]+)|(const|let|var)\s+([^\s=]+)\s*=\s*(async)?(\s+function|\s*\([^\s=]*\)\s*=>))/g;
+            /(^|\n)\s*export\s+((async\s+)?function\s+([^\(]+)|(const|let|var)\s+([^\s=]+)\s*=\s*(async)?(\s+function|\s*\([^\s=]*\)\s*=>))/g;
 
         vscode.workspace.onDidChangeConfiguration((_) => {
             this._onDidChangeCodeLenses.fire();
