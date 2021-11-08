@@ -1,5 +1,5 @@
 import { it } from "mocha";
-import { match, doesNotMatch } from "assert";
+import { match, doesNotMatch, strictEqual, fail } from "assert";
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
@@ -38,6 +38,21 @@ suite("Extension Test Suite", () => {
         match("export const varName = () => 2", getRegex());
         match("export let varName = () => 2", getRegex());
         match("export var varName = () => 2", getRegex());
+    });
+
+    it("should match functions after import", () => {
+        const code = `import { join, parse } from "path";\n\nexport function pathInfo() {}`;
+
+        // Test if it matches
+        match(code, getRegex());
+
+        // Checks if it's the correct index (right line)
+        const matches = getRegex().exec(code);
+        if (matches) {
+            strictEqual(matches.index, code.indexOf("export"));
+        } else {
+            fail("Failed to match regex");
+        }
     });
 
     it("should not match functions inside strings", () => {

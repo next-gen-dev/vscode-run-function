@@ -21,7 +21,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
     constructor() {
         // TODO: make this regex a "function" with test inputs and outputs
         this.regex =
-            /(^|\n)\s*export\s+((async\s+)?function\s+([^\(]+)|(const|let|var)\s+([^\s=]+)\s*=\s*(async)?(\s+function|\s*\([^\s=]*\)\s*=>))/g;
+            /(^|(?<=\n))[\t ]*export\s+((async\s+)?function\s+([^\(]+)|(const|let|var)\s+([^\s=]+)\s*=\s*(async)?(\s+function|\s*\([^\s=]*\)\s*=>))/g;
 
         vscode.workspace.onDidChangeConfiguration((_) => {
             this._onDidChangeCodeLenses.fire();
@@ -56,15 +56,17 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                 );
                 if (range) {
                     const name = getFunctionNameFromMatch(matches);
-                    this.codeLenses.push(
-                        new vscode.CodeLens(range, {
-                            title: "► Run function",
-                            tooltip:
-                                "Executes the function and logs the returned value",
-                            command: "run-function.codelensAction",
-                            arguments: [document, name, line.lineNumber],
-                        }),
-                    );
+                    if (name) {
+                        this.codeLenses.push(
+                            new vscode.CodeLens(range, {
+                                title: "► Run function",
+                                tooltip:
+                                    "Executes the function and logs the returned value",
+                                command: "run-function.codelensAction",
+                                arguments: [document, name, line.lineNumber],
+                            }),
+                        );
+                    }
                 }
             }
             return this.codeLenses;
