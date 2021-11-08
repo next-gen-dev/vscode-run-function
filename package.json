@@ -3,7 +3,7 @@
     "displayName": "Run Function",
     "description": "Execute js and ts functions",
     "version": "0.1.0",
-    "publisher": "andreterron",
+    "publisher": "nextgendev",
     "private": true,
     "license": "MIT",
     "repository": {
