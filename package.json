@@ -2,7 +2,7 @@
     "name": "vscode-run-function",
     "displayName": "Run Function",
     "description": "Execute js and ts functions",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "publisher": "andreterron",
     "private": true,
     "license": "MIT",
