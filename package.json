@@ -17,7 +17,7 @@
         "Other"
     ],
     "activationEvents": [
-        "*"
+        "workspaceContains:**/*.{mjs,ts,tsx}"
     ],
     "main": "./out/extension.js",
     "contributes": {
