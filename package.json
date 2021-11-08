@@ -1,7 +1,7 @@
 {
     "name": "vscode-run-function",
     "displayName": "Run Function",
-    "description": "Execute js and ts functions",
+    "description": "Run JavaScript and TypeScript functions with one click!",
     "version": "0.1.0",
     "publisher": "nextgendev",
     "private": true,
