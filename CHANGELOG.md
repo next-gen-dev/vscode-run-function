@@ -5,6 +5,12 @@ All notable changes to the "vscode-run-function" extension will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2021-11-08
+
+### Fixed
+
+-   Added typescript as an extension dependency, to avoid errors when typescript isn't a project dependency
+
 ## [0.1.0] - 2021-11-07
 
 ### Added

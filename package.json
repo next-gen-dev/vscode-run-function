@@ -2,7 +2,7 @@
     "name": "vscode-run-function",
     "displayName": "Run Function",
     "description": "Run JavaScript and TypeScript functions with one click!",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "publisher": "nextgendev",
     "private": true,
     "license": "MIT",
@@ -49,7 +49,9 @@
         "watch": "tsc -watch -p ./",
         "pretest": "yarn run compile && yarn run lint",
         "lint": "eslint src --ext ts",
-        "test": "node ./out/test/runTest.js"
+        "test": "node ./out/test/runTest.js",
+        "package": "vsce package",
+        "publish": "vsce publish"
     },
     "devDependencies": {
         "@types/vscode": "^1.62.0",
@@ -61,10 +63,10 @@
         "eslint": "^8.1.0",
         "glob": "^7.1.7",
         "mocha": "^9.1.3",
-        "typescript": "^4.4.4",
         "@vscode/test-electron": "^1.6.2"
     },
     "dependencies": {
-        "ts-node": "^10.4.0"
+        "ts-node": "^10.4.0",
+        "typescript": "^4.4.4"
     }
 }
