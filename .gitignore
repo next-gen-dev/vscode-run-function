@@ -10,3 +10,5 @@ tsconfig.lsif.json
 dist
 .vscode-test/
 *.vsix
+.clj-kondo/
+.lsp/
