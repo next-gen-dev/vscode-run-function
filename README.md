@@ -46,9 +46,11 @@ import("./myFile") // Imports your file dynamically
     -   Temp file: Creates a temp file in the same folder and executes that instead. Might have problems if other files require the file (circular references)
     -   Don't save: Doesn't save the file. Executes the saved file. Should notify the user that it's executing the unsaved version
 -   [ ] Add a VSCode command (Cmd+Shift+P) to run the current function
+-   [ ] Color the output
 -   [ ] Add an option to disable the CodeLens
 -   [ ] Add an option to run the function in the terminal
--   [ ] Color the output
+-   [ ] Add an option to display an execution icon inline, instead of above the functions
+-   [ ] Add an option to create a keyboard shortcut to execute the function
 -   [ ] Display a webview with an interactive way of visualizing the data. Useful for objects (with a tree view), or lists (with a table view)
 
 ## Developing
