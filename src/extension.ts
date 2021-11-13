@@ -5,13 +5,13 @@ import {
     ExtensionContext,
     languages,
     commands,
-    workspace,
     window,
     OutputChannel,
     TextDocument,
     DocumentFilter,
 } from "vscode";
 import { CodelensProvider } from "./CodelensProvider";
+import { migrateDeprecatedConfig } from "./migrations";
 import { moduleFunctionProcess } from "./runner";
 
 const documentFilter: DocumentFilter[] = [
@@ -58,21 +58,11 @@ export function activate(context: ExtensionContext) {
     const codelensProvider = new CodelensProvider();
     const output = window.createOutputChannel("Run Function Extension");
 
+    migrateDeprecatedConfig();
+
     context.subscriptions.push(
         output,
         languages.registerCodeLensProvider(documentFilter, codelensProvider),
-
-        commands.registerCommand("run-function.enableCodeLens", () => {
-            workspace
-                .getConfiguration("run-function")
-                .update("enableCodeLens", true, true);
-        }),
-
-        commands.registerCommand("run-function.disableCodeLens", () => {
-            workspace
-                .getConfiguration("run-function")
-                .update("enableCodeLens", false, true);
-        }),
 
         commands.registerCommand(
             "run-function.codelensAction",

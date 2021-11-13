@@ -26,6 +26,15 @@ import("./myFile") // Imports your file dynamically
     .catch((e) => console.error(e)); // Logs errors
 ```
 
+## Extension Settings
+
+This extension contributes the following settings:
+
+-   `run-function.buttonDisplay`: Defines how to display the button to run the function.
+    -   `icon and text above`: Displays a \"► Run Function\" button above the function
+    -   `icon above`: Displays a \"►\" icon button above the function
+    -   `none`: No button is displayed
+
 ## Limitations
 
 -   Function Arguments aren't supported **yet**
@@ -47,7 +56,6 @@ import("./myFile") // Imports your file dynamically
     -   Don't save: Doesn't save the file. Executes the saved file. Should notify the user that it's executing the unsaved version
 -   [ ] Add a VSCode command (Cmd+Shift+P) to run the current function
 -   [ ] Color the output
--   [ ] Add an option to disable the CodeLens
 -   [ ] Add an option to run the function in the terminal
 -   [ ] Add an option to display an execution icon inline, instead of above the functions
 -   [ ] Add an option to create a keyboard shortcut to execute the function

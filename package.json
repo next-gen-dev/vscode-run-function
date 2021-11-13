@@ -2,7 +2,7 @@
     "name": "vscode-run-function",
     "displayName": "Run Function",
     "description": "Run JavaScript and TypeScript functions with one click!",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "publisher": "nextgendev",
     "private": true,
     "license": "MIT",
@@ -22,23 +22,28 @@
     ],
     "main": "./out/extension.js",
     "contributes": {
-        "commands": [
-            {
-                "title": "Enable Run Function CodeLens",
-                "command": "run-function.enableCodeLens",
-                "category": "Run Function"
-            },
-            {
-                "title": "Disable Run Function CodeLens",
-                "command": "run-function.disableCodeLens",
-                "category": "Run Function"
-            }
-        ],
         "configuration": {
+            "title": "Run Function",
             "properties": {
                 "run-function.enableCodeLens": {
                     "type": "boolean",
-                    "default": true
+                    "default": true,
+                    "deprecationMessage": "Deprecated. Please use the `run-function.buttonDisplay` configuration, set it to \"icon and text above\", \"icon above\" or \"none\""
+                },
+                "run-function.buttonDisplay": {
+                    "type": "string",
+                    "description": "Defines how to display the button to run the function",
+                    "default": "icon and text above",
+                    "enum": [
+                        "icon and text above",
+                        "icon above",
+                        "none"
+                    ],
+                    "enumDescriptions": [
+                        "Displays a \"► Run Function\" button above the function",
+                        "Displays a \"►\" icon button above the function",
+                        "No button is displayed"
+                    ]
                 }
             }
         }

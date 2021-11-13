@@ -7,6 +7,12 @@ function getFunctionNameFromMatch(match: RegExpMatchArray): string {
     return match[4];
 }
 
+export type ButtonDisplayType =
+    | string
+    | "icon and text above"
+    | "icon above"
+    | "none";
+
 /**
  * CodelensProvider
  */
@@ -28,15 +34,44 @@ export class CodelensProvider implements vscode.CodeLensProvider {
         });
     }
 
+    private getButtonDisplayType(): ButtonDisplayType {
+        return vscode.workspace
+            .getConfiguration("run-function")
+            .get("buttonDisplay", "icon and text above");
+    }
+
+    private getButtonString() {
+        // run-function.buttonDisplay
+        const buttonDisplayType = this.getButtonDisplayType();
+
+        switch (buttonDisplayType) {
+            case "icon and text above":
+                return "► Run function";
+            case "icon above":
+            case "icon before name":
+                return "►";
+            case "none":
+                "";
+        }
+        // TODO: default case
+        return "";
+    }
+
+    private isEnabled() {
+        return (
+            vscode.workspace
+                .getConfiguration("run-function")
+                .get("enableCodeLens", true) &&
+            this.getButtonDisplayType() !== "none"
+        );
+    }
+
     public provideCodeLenses(
         document: vscode.TextDocument,
         token: vscode.CancellationToken,
     ): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
-        if (
-            vscode.workspace
-                .getConfiguration("run-function")
-                .get("enableCodeLens", true)
-        ) {
+        if (this.isEnabled()) {
+            const buttonString = this.getButtonString();
             this.codeLenses = [];
             const regex = new RegExp(this.regex);
             const text = document.getText();
@@ -59,7 +94,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
                     if (name) {
                         this.codeLenses.push(
                             new vscode.CodeLens(range, {
-                                title: "► Run function",
+                                title: buttonString,
                                 tooltip:
                                     "Executes the function and logs the returned value",
                                 command: "run-function.codelensAction",
@@ -78,11 +113,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
         codeLens: vscode.CodeLens,
         token: vscode.CancellationToken,
     ) {
-        if (
-            vscode.workspace
-                .getConfiguration("run-function")
-                .get("enableCodeLens", true)
-        ) {
+        if (this.isEnabled()) {
             return codeLens;
         }
         return null;
