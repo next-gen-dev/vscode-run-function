@@ -1,8 +1,9 @@
 {
     "name": "vscode-run-function",
+    "icon": "images/icon-256.png",
     "displayName": "Run Function",
     "description": "Run JavaScript and TypeScript functions with one click!",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "publisher": "nextgendev",
     "private": true,
     "license": "MIT",

@@ -4,7 +4,7 @@ Run JavaScript and TypeScript functions with one click!
 
 When writing a new function, how do you quickly verify it's working properly? Stop creating temporary files just to test a function, or getting repl import errors. With the Run Function VS Code extension, you can just click one button on exported functions to run them directly within VS Code!
 
-![Extension demo, executing functions directly from the IDE](./demo.gif)
+![Extension demo, executing functions directly from the IDE](./images/demo.gif)
 
 ## Features
 
