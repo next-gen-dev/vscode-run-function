@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Added an icon to the extension
 
+### Fixed
+
+-   Set TypeScript `module` option to `"commonjs"` to fix issues when it's set to `"esnext"` (default for create-react-app)
+
 ## [0.2.0] - 2021-11-12
 
 ### Added

@@ -59,6 +59,7 @@ This extension contributes the following settings:
 -   [ ] Add an option to run the function in the terminal
 -   [ ] Add an option to display an execution icon inline, instead of above the functions
 -   [ ] Add an option to create a keyboard shortcut to execute the function
+-   [ ] Add an option to customize TypeScript Compile Options
 -   [ ] Display a webview with an interactive way of visualizing the data. Useful for objects (with a tree view), or lists (with a table view)
 
 ## Developing

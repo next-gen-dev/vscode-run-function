@@ -27,7 +27,7 @@ function tsProcess(filepath: string, functionName: string) {
     const args = [
         "-T",
         "-O",
-        `{"target": "es2015"}`,
+        `{"target": "es2015", "module": "commonjs"}`,
         "-e",
         `import('./${name}').then(m => m.${functionName}()).then(v => console.log(JSON.stringify(v, null, 4)), console.error)`,
     ];
